@@ -1,4 +1,3 @@
-#!/opt/local/bin/python2.7
 
 from FITSTemplate import *
 import argparse
@@ -54,38 +53,38 @@ if (args.theta is not None):
 ThisFits=FITSCore("",DefaultFits.xsize, DefaultFits.ysize, DefaultFits.RA_val, DefaultFits.dec_val, DefaultFits.px_size)
 
 # Print some information about the model that is about to be produced
-print ''
-print 'Input model parameters:'
-print '   Output    : %s' % output
-print '   overwrite : %s' % args.overwrite
-print '   xsize     : %d pixels' % ThisFits.xsize
-print '   ysize     : %d pixels' % ThisFits.ysize
-print '   pixel size: %f degrees' % ThisFits.px_size
-print '   intensity : %f' % intensity
-print '   RA        : %f deg' % ThisFits.RA_val
-print '   Dec       : %+f deg' % ThisFits.dec_val
-print '   Type      : %s' % args.type
+print ('')
+print ('Input model parameters:')
+print ('   Output    : %s' % output)
+print ('   overwrite : %s' % args.overwrite)
+print ('   xsize     : %d pixels' % ThisFits.xsize)
+print ('   ysize     : %d pixels' % ThisFits.ysize)
+print ('   pixel size: %f degrees' % ThisFits.px_size)
+print ('   intensity : %f' % intensity)
+print ('   RA        : %f deg' % ThisFits.RA_val)
+print ('   Dec       : %+f deg' % ThisFits.dec_val)
+print ('   Type      : %s' % args.type)
 if (args.type=='disk'):
-    print '   radius    : %f degrees' % args.radius
+    print ('   radius    : %f degrees' % args.radius)
 elif(args.type=='gaus'):
-    print '   sigma     : %f degrees' % args.sigma
+    print ('   sigma     : %f degrees' % args.sigma)
 elif(args.type=='asymgaus'):
-    print '   sigma     : %f degrees' % args.sigma
-    print '   epsilon   : %f' % epsilon
-    print '   theta     : %f' % theta
-print ''
+    print ('   sigma     : %f degrees' % args.sigma)
+    print ('   epsilon   : %f' % epsilon)
+    print ('   theta     : %f' % theta)
+print ('')
 ################################
 # Handle the disk model
 ################################
 if (args.type == 'disk'):
     # make sure a radius was given
     if ((args.radius=='None')or(args.radius<0.0)):
-        print "[ERROR] Radius must be positive!"
+        print ("[ERROR] Radius must be positive!")
     else:
         # Convert the radius from degrees to pixels
         radius = args.radius/ThisFits.px_size
         # Create the disk template
-        print 'Creating disk model with radius=%f pixels' % radius
+        print ('Creating disk model with radius=%f pixels' % radius)
         FITSCore.DiskTemplate(ThisFits, radius, intensity, output, args.overwrite)
 
 ################################
@@ -94,12 +93,12 @@ if (args.type == 'disk'):
 elif (args.type == 'gaus'):
     # Make sure that a sigma was supplied
     if ((args.sigma is None) or (args.sigma<=0.0)):
-        print "[ERROR] Gaussian sigma must be greater than 0!"
+        print ("[ERROR] Gaussian sigma must be greater than 0!")
     else:
         # Convert the sigma to FWHM in units of pixels
         FWHM = (args.sigma*2.7725887)/ThisFits.px_size
         
-        print 'Creating Gaussian model with sigma=%f (FWHM=%f pixels)' % (args.sigma, FWHM)
+        print ('Creating Gaussian model with sigma=%f (FWHM=%f pixels)' % (args.sigma, FWHM))
         # Create the Gaussian template
         FITSCore.GaussianTemplate(ThisFits, FWHM, intensity, output, args.overwrite)
 
@@ -109,14 +108,14 @@ elif (args.type == 'gaus'):
 elif (args.type == 'asymgaus'):
     # make sure an appropriate value for sigma was supplied
     if ((args.sigma is None)or(args.sigma<=0.0)):
-        print "[ERROR] Gaussian sigma must be greater than 0!"
+        print ("[ERROR] Gaussian sigma must be greater than 0!")
     elif (args.epsilon is None):
-        print "[ERROR] Epsilon must be defined!"
+        print ("[ERROR] Epsilon must be defined!")
     else:
         # Convert he sigma to FWHM in units of pixels
         FWHM = (args.sigma*2.7725887)/ThisFits.px_size
         # Create the asymmetric Gaussian template
-        print 'Creating Gaussian model with sigma=%f (FWHM=%f pixels), epsilon=%f, theta=%f' % (args.sigma, FWHM, epsilon, theta)
+        print ('Creating Gaussian model with sigma=%f (FWHM=%f pixels), epsilon=%f, theta=%f' % (args.sigma, FWHM, epsilon, theta))
         FITSCore.EllipticalGaussianTemplate(ThisFits, FWHM, intensity, epsilon, theta, output, args.overwrite)
 
 

@@ -1,3 +1,4 @@
+
 #!/opt/local/bin/python
 
 import sys
@@ -8,8 +9,10 @@ from astropy.coordinates import SkyCoord
 import numpy as np
 import scipy.ndimage.interpolation as spr
 from astropy import wcs
-import ConfigParser
-
+if sys.version_info < (3, 0):
+   import ConfigParser as configparser
+else:
+   import configparser
 class FITSCore (object):
 
     def __init__ (self,\
@@ -46,7 +49,7 @@ class FITSCore (object):
              intensity.
         """
         if (os.path.isfile(paramfile)):
-            config=ConfigParser.RawConfigParser()
+            config=configparser.RawConfigParser()
             config.read(paramfile)
             self.xsize = config.getint("FOV","xsize")
             self.ysize = config.getint("FOV","ysize")
@@ -75,7 +78,7 @@ class FITSCore (object):
         try:
             hdu.writeto(outname,clobber=overwrite)
         except IOError:
-            print "Could not create file! {0} already exists. Try again with overwrite set to True.".format(outname)
+            print ("Could not create file! {0} already exists. Try again with overwrite set to True.".format(outname))
 
             
     def DiskTemplate (self, radius, intensity, outname, overwrite=False):
